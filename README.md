@@ -37,6 +37,6 @@ The followng scripts are available:
    outlines are included in the classification. The number of band combinations used for the classification was
    increased to 40.
 
-The scripts in this repository were created for the Master Thesis 'Refining Debris-Covered Glacier Outlines using Land       
-Surface Temperature Data', by Lorena Müller. Supervised by Gabriele Bramati, Dr. Kathrin Naegeli and Dr. Hendrik Wulf,       
-University of Zürich, Remote Sensing Laboratories, December 2024. 
+The scripts in this repository were created for the Master Thesis 'Refining Debris-Covered Glacier Outlines using 
+Land Surface Temperature Data', by Lorena Müller. Supervised by Gabriele Bramati, Dr. Kathrin Naegeli and Dr. 
+Hendrik Wulf, University of Zürich, Remote Sensing Laboratories, December 2024. 
