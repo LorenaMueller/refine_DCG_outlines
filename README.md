@@ -1,42 +1,102 @@
-# refine_DCG_outlines
-This repository contains Google Earth Engine scripts to refine Debris-Covered Glacier (DCG) outlines using Land Surface Temperature (LST) data. 
+# Automated Mapping of Debris-Covered Glaciers – Code and Data Repository
 
-LST from Landsat 5 and 8 was combined with other spectral (Landsat 5 and 8) and topographic information (NASADEM, Copernicus DEM, SwissAlti3D), 
-and outlines of existing glacier Inventories (Randolph Glacier Inventory (RGI) 7.0, Swiss Glacier Inventory (SGI) 2010 and SGI2016) to differentiate 
-between DCG and its surroundings. 
+This repository provides a semi-automated pipeline for mapping debris-covered glaciers (DCGs) using freely available satellite data and machine learning techniques. The workflow leverages:
 
-The followng scripts are available: 
+Google Earth Engine (GEE) to preprocess and export satellite-derived features.
+Google Colab for loading these features, training an XGBoost classifier, and generating final glacier outlines.
 
-1. Data selection and generation of input layers
-   
-   Relevant data is selected and processed. Per glacier and year, 14 images are generated that are used as input layers for
-   the DCG classification in step 2. This is performed for Zmuttgletscher, Unteraargletscher and Oberaletschgletscher (Swiss
-   Alps) for the years 2003, 2010 and 2016, and for Belvedere and Satopanth Glaciers for the year 2003. The input layers can
-   either be based on single scenes or a composite image of the summer of analysis.
-   
-3. DCG classification
-   
-   2.1 Temporal changes
-   
-   Data of one glacier of different years is used for training and testing of the classifier.
-   
-   2.2 Different glaciers Approach I
-   
-   Data of the same year of different glaciers is used for training and testing of the classifier. The most current glacier
-   outlines are included as one of 14 input layers to the classification.
-   
-   2.3 Different glaciers Approch II
-   
-   Data of the same year of different glaciers is used for training and testing of the classifier. The RGI 7.0 outlines
-   (dating to the year 2003) are included as one of 14 input layers to the classification, regardless of the year of
-   analysis.
-   
-   2.4 Different glaciers Approch III
-   
-   Data of the same year of different glaciers is used for training and testing of the classifier. No existing glacier
-   outlines are included in the classification. The number of band combinations used for the classification was
-   increased to 40.
+Our approach aims to improve DCG mapping in complex terrain where traditional methods relying on manual delineation or high-resolution data are not scalable. The methodology is validated on glaciers in Switzerland, Italy, and India, and is designed with global applicability in mind.
 
-The scripts in this repository were created for the Master Thesis 'Refining Debris-Covered Glacier Outlines using 
-Land Surface Temperature Data', by Lorena Müller. Supervised by Gabriele Bramati, Dr. Kathrin Naegeli and Dr. 
-Hendrik Wulf, University of Zürich, Remote Sensing Laboratories, December 2024. 
+Last update to this readme: 16 June 2025.
+
+---
+
+## 1. Repository structure
+
+Here is the structure of this repo. Files have been excluded from this tree for readability.
+
+```
+├───code
+│   ├───gee_preprocessing
+│   │   └───GEE_DCGlacier_Processing.js
+│   └───colab_analysis
+│       └───DCG_Classification_Colab.ipynb
+|   
+│
+├───data
+│   └───glacier_inputs
+│       ├───exported_feature_stacks
+│       └───reference_outlines
+│
+├───figures
+│
+└───tables
+```
+
+* The script in `gee_preprocessing` is a Google Earth Engine (GEE) script used to derive relevant spectral, thermal, radar, and topographic features from open satellite data (Sentinel-1, Landsat 8, Copernicus DEM). The processed image layers are exported to Google Drive.
+
+* The script in `colab_analysis` is a Google Colab notebook that loads the exported data, trains an XGBoost classifier, evaluates the results, and generates final glacier outlines, including multi-year averaged maps.
+
+* The folder `data` is empty by default and should contain the exported image stacks and reference glacier outlines. These can be obtained by running the GEE script or using links provided in the manuscript (see Zenodo DOI when available).
+
+* The folders `figures` and `tables` are used to store outputs from the analysis, including classification maps, comparisons with glacier inventories, and performance metrics.
+
+[back to content](#1-repository-structure)
+
+---
+
+## 2. Required data and software
+
+### Data
+
+The necessary satellite data is accessed and processed via Google Earth Engine using the script provided. Outputs are exported to Google Drive for local access in Colab. No manual data download is required, though reference outlines (e.g., SGI, RGI) must be added manually.
+
+
+### Software
+
+* **Google Earth Engine** (JavaScript API via browser)
+* **Google Colab** with:
+
+  * Python 3
+  * `xgboost`, `numpy`, `pandas`, `rasterio`, `scikit-learn`, `matplotlib`, `geopandas`
+
+Execution is tested and optimized for cloud-based platforms and should be OS-independent.
+
+[back to content](#2-required-data-and-software)
+
+---
+
+## 3. Contact
+
+Code development: \[Lorena Müller], \[University of Zürich, TIR lab (Thermal InfraRed)]
+For questions, suggestions, or bug reports, please contact: \[[your.email@institution.org](mailto:your.email@institution.org)]
+
+[back to content](#3-contact)
+
+---
+
+## 4. Acknowledgements
+
+We thank ESA and NASA for free access to Sentinel-1 and Landsat 8 data.
+Topographic data from the Copernicus Digital Elevation Model was provided by the European Space Agency.
+We also acknowledge the Swiss Glacier Inventory (SGI) and the Randolph Glacier Inventory (RGI 7.0) for validation and reference.
+
+[back to content](#4-acknowledgements)
+
+
+---
+
+## 5. License
+
+The scripts in this repository (`*.js`, `*.ipynb`) are licensed under the MIT License (see LICENSE file).
+??
+
+**Creative Commons License**
+All other content (e.g. figures, tables, documentation) is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+??
+[back to content](#6-license)
+
+---
+
+Let me know if you’d like to add Zenodo links, author affiliations, or specific figure/table outputs to complete the documentation.
+
