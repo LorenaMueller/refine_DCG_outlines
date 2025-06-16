@@ -49,8 +49,7 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 
 ### Data
 
-The necessary satellite data is accessed and processed via Google Earth Engine using the script provided. Outputs are exported to Google Drive for local access in Colab. No manual data download is required, though reference outlines (e.g., SGI, RGI) must be added manually.
-
+The necessary satellite data is accessed and processed via Google Earth Engine using the script provided. Outputs are exported to Google Drive for local access in Colab. 
 
 ### Software
 
