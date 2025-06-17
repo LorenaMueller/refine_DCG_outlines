@@ -97,5 +97,3 @@ All other content (e.g. figures, tables, documentation) is licensed under a [Cre
 
 ---
 
-Let me know if you’d like to add Zenodo links, author affiliations, or specific figure/table outputs to complete the documentation.
-
