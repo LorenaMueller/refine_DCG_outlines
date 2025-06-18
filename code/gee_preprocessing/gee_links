@@ -1,0 +1,9 @@
+GEE links for access to scripts and data
+
+The following links provide access to the Google Earth Engine (GEE) Scripts used for data preprocessing in GEE. 
+
+a. Create Input Layers (relevant for further processing in google colab)
+https://code.earthengine.google.com/94429501b795e5b303df0b8cc51e5935
+
+b. Full Repository (for background information and intermediate steps of the methodology development)
+https://code.earthengine.google.com/?accept_repo=users/lorenamueller/Refine_DCG_Outlines
