@@ -17,16 +17,13 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 
 ```
 ├───code
-│   ├───gee_preprocessing
-│   │   └───GEE_DCGlacier_Processing.js
+│   ├───gee_preprocessing  
 │   └───colab_analysis
-│       └───DCG_Classification_Colab.ipynb
-|   
-│
+│      
 ├───data
-│   └───glacier_inputs
-│       ├───exported_feature_stacks
-│       └───reference_outlines
+│   └───results
+│       ├───figures
+│       └───polygon_outlines
 │
 ├───figures
 │
@@ -50,6 +47,13 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 ### Data
 
 The necessary satellite data is accessed and processed via Google Earth Engine using the script provided. Outputs are exported to Google Drive for local access in Colab. 
+To process the same glaciers (Zmutt, Unteraar, Oberaletsch, Zinal, Mauvoisin, Belvedere, Satopanth) and years (2016, 2018, 2020, 2022, 2024) as was done in the context of this work, no manual data download is needed. All relevant data is provided and shared in the Assets of the Google Earth Engine (GEE) Script (1_create_input_layers). 
+
+To extend the analysis to other glaciers and/or years, the follwoing steps will have to be followed: 
+* Additional Coherence data: e.g. manual processing using the ESA SNAP software and upload of the processed geotiff file to the GEE assets.
+* Inspect Landsat scenes of the desired region/year.
+* Add names of the processed coherence and landsat scene in GEE script (1_create_input_layers), run script and export to Drive.
+* Add the new glaciers and/or years in the google colab script (complete_RF_all_glaciers.ipynb).
 
 ### Software
 
@@ -59,7 +63,7 @@ The necessary satellite data is accessed and processed via Google Earth Engine u
   * Python 3
   * `xgboost`, `numpy`, `pandas`, `rasterio`, `scikit-learn`, `matplotlib`, `geopandas`
 
-Execution is tested and optimized for cloud-based platforms and should be OS-independent.
+* If additional coherence data is processed: **ESA SNAP** 
 
 [back to content](#2-required-data-and-software)
 
