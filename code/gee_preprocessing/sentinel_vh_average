@@ -1,0 +1,43 @@
+// Define your point of interest (Unteraargletscher)
+//var poi = ee.Geometry.Point([8.12, 46.60]);
+var poi = ee.Geometry.Point([8.045, 45.945]);
+
+// Define your date range (adjust as needed)
+var startDate = '2024-08-01';
+var endDate = '2024-08-31';
+
+// Load the full Sentinel-1 collection
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filterBounds(poi)
+  .filterDate(startDate, endDate)
+  // Filter by acquisition mode (most Sentinel-1 land images use IW)
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  // Filter for descending orbit if needed
+  .filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING'));
+
+// Now keep only those images with both VV and VH bands
+var dualVVVH = s1.filter(ee.Filter.and(
+  ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'),
+  ee.Filter.listContains('transmitterReceiverPolarisation', 'VH')
+));
+
+// Confirm result
+print('VV+VH images:', dualVVVH);
+print('Count:', dualVVVH.size());
+
+// OPTIONAL: Reduce to a composite (e.g., mean VH)
+var vhMin = dualVVVH.select('VH').min();
+Map.centerObject(poi, 11);
+Map.addLayer(vhMin, {min: -25, max: 0}, 'Min VH');
+
+var vhMean = dualVVVH.select('VH').mean();
+Map.addLayer(vhMean, {min: -25, max: 0}, 'Mean VH');
+
+var vhMax = dualVVVH.select('VH').max();
+Map.addLayer(vhMax, {min: -25, max: 0}, 'Max VH');
+
+var vhMedian = dualVVVH.select('VH').median();
+Map.addLayer(vhMedian, {min: -25, max: 0}, 'Median VH');
+
+var vhFirst = dualVVVH.select('VH').first();
+Map.addLayer(vhFirst, {min: -25, max: 0}, 'First VH');

@@ -1,0 +1,68 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var rgi7 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/rgi_central_europe"),
+    zmutt_roi = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[7.5951053533720225, 46.010474573000465],
+          [7.5951053533720225, 45.97755911622208],
+          [7.6829959783720225, 45.97755911622208],
+          [7.6829959783720225, 46.010474573000465]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+// Load Copernicus DEM
+var roi = zmutt_roi;
+
+var dem = ee.ImageCollection("COPERNICUS/DEM/GLO30").filterBounds(roi).select('DEM').mosaic()
+      .setDefaultProjection({crs: 'EPSG:4326', scale: 30 });
+dem = dem.select('DEM').rename('elevation');
+
+// Load RGI Glacier Outlines (imported asset)
+var rgi = ee.FeatureCollection(rgi7);
+
+// Clip DEM to glacier areas
+var demClipped = dem.clip(rgi);
+demClipped = demClipped.clip(roi);
+
+// Get min and max elevation in the entire ROI
+var minMax = dem.reduceRegion({reducer: ee.Reducer.minMax(), geometry: roi, scale: 30, bestEffort: true});
+
+var minElev = ee.Number(minMax.get('elevation_min'));
+var maxElev = ee.Number(minMax.get('elevation_max'));
+
+// Normalize DEM
+var normDEM = demClipped.subtract(minElev).divide(maxElev.subtract(minElev)).rename("normalized_elevation");
+
+// Mask areas where normalized elevation is ≤ 0.1
+var lowElevMask = normDEM.lte(0.1);
+
+// Convert raster to vector for buffering
+var lowElevVector = lowElevMask.selfMask().reduceToVectors({geometryType: 'polygon', reducer: ee.Reducer.countEvery(), scale: 30, bestEffort: true});
+
+// Apply 300m buffer to low-elevation areas
+var lowElevBuffer = lowElevVector.map(function(f) {
+  return f.buffer(300);
+});
+
+// Create a general glacier buffer (100m for all areas)
+var glacierBuffer = rgi.map(function(f) {
+  return f.buffer(100);
+});
+
+// Rasterize the 300m buffer
+var buffer300 = ee.Image().byte().paint({ featureCollection: lowElevBuffer, color: 1}).unmask(0); // Set 0 for unmasked areas
+
+// Rasterize the 100m buffer
+var buffer100 = ee.Image().byte().paint({ featureCollection: glacierBuffer,  color: 1}).unmask(0); // Set 0 for unmasked areas
+
+// Merge both buffers, ensuring the larger 300m is not overwritten
+var bufferRaster = buffer100.max(buffer300).rename("buffer_mask");
+
+Map.centerObject(roi, 13);
+Map.addLayer(rgi, {min: 0, max: 1, palette: ['white', 'black']} , 'rgi');
+Map.addLayer(normDEM, {min:0, max:1, palette: ['blue', 'lightblue', 'white', 'yellow', 'orange']}, 'normDem');
+Map.addLayer(bufferRaster, {min: 0, max: 1, palette: ['white', 'black']}, 'buffer' );

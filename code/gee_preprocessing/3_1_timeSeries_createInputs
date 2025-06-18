@@ -1,0 +1,730 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var swissAlti_zmutt = ee.Image("projects/ee-lorenamuellerthesis/assets/swissalti3d_zmutt_reprojected"),
+    roi_unteraar = 
+    /* color: #00ffff */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[8.093277358211939, 46.605423677609075],
+          [8.093277358211939, 46.52894816125691],
+          [8.286568068661158, 46.52894816125691],
+          [8.286568068661158, 46.605423677609075]]], null, false),
+    swissAlti_oberaletsch = ee.Image("projects/ee-lorenamuellerthesis/assets/alti3d_oberaletsch"),
+    swissAlti_unteraar = ee.Image("projects/ee-lorenamuellerthesis/assets/alti3d_unteraar"),
+    dem_nasa = ee.Image("NASA/NASADEM_HGT/001"),
+    dem_copernicus = ee.ImageCollection("COPERNICUS/DEM/GLO30"),
+    debriscover = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/debriscover_2016_reprojected"),
+    sgi2010 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/sgi210_reprojected"),
+    rgi_europe = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/rgi_central_europe"),
+    roi_oberaletsch = 
+    /* color: #00ff00 */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[7.912561745928528, 46.398720480474125],
+          [8.012468667315247, 46.398720480474125],
+          [8.012468667315247, 46.462610294473386],
+          [7.912561745928528, 46.462610294473386],
+          [7.912561745928528, 46.398720480474125]]]),
+    roi_belvedere = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[7.869268251163195, 45.920126700794086],
+          [7.939134431583117, 45.920126700794086],
+          [7.939134431583117, 45.971572003401974],
+          [7.869268251163195, 45.971572003401974],
+          [7.869268251163195, 45.920126700794086]]], null, false),
+    rgi_satopanth = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/rgi_v7_satopanth"),
+    roi_satopanth = 
+    /* color: #98ff00 */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[79.26577706182661, 30.815139018130388],
+          [79.26594872320356, 30.72649454438789],
+          [79.39520974004927, 30.724133509351514],
+          [79.41821236456099, 30.773850588265216],
+          [79.42919869268599, 30.819414306230968],
+          [79.31435723150435, 30.82162558747115]]]),
+    sgi2016 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/GLAMOS/SGI_2016_glaciers"),
+    debris_cover1995 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/groundTruth_moelg/debris_cover_1995"),
+    debris_cover2001 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/groundTruth_moelg/debris_cover_2001"),
+    debris_cover2005 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/groundTruth_moelg/debris_cover_2005"),
+    debris_cover2010 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/groundTruth_moelg/debris_cover_2010"),
+    debris_cover2013 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/groundTruth_moelg/debris_cover_2013"),
+    roi_zmutt = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[7.600281253593124, 46.017308764730124],
+          [7.600281253593124, 45.97855236354971],
+          [7.682678714530624, 45.97855236354971],
+          [7.682678714530624, 46.017308764730124]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+
+//========================
+// 1. Variable definitions
+//========================
+
+// Glacier-specific variables
+var glacierName = 'zmutt';
+var roi =  roi_zmutt;
+var swissAlti = swissAlti_zmutt;
+var sgiId = 'B57-05';
+var rgiId1 = 753583;
+var rgiId2 = 753583;
+var crs = 'EPSG:32632';
+var rgi =  rgi_europe;
+var landsat = {
+      1993: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19930817'),
+      1994: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19940804'),
+      1995: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_194028_19950816'),
+      1996: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19960809'),
+      1997: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19970812'),
+      1998: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19980831'),
+      1999: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_19990717'),
+      2000: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20000719'),
+      2001: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20010823'),
+      2002: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20020623'),
+      2003: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20030813'),
+      2004: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20040730'),
+      2005: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20050818'),
+      2006: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20060720'),
+      2007: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20070824'),
+      2008: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20080725'),
+      2009: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20090728'),
+      2010: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20100731'),
+      2013: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20130925'), // 2013 Landsat 8 scene
+      2014: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20140827'), // 2014 Landsat 8 scene
+      2015: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20150830'), // 2015 Landsat 8 scene
+      2016: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20160901'), // 2016 Landsat 8 scene
+      2017: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20170718'), // 2017 Landsat 8 scene
+      2018: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20180806'), // 2018 Landsat 8 scene
+      2019: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20190825'), // 2019 Landsat 8 scene
+      2020: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20200827'), // 2020 Landsat 8 scene
+      2021: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20210814'), // 2021 Landsat 8 scene
+      2022: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20220801'), // 2022 Landsat 8 scene
+      2023: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20230820'), // 2023 Landsat 8 scene
+      2024: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20240806')  // 2024 Landsat 8 scene
+
+      //old
+      //2003: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20030813'),
+      //2010: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20100901'),
+      //2010: ee.Image('LANDSAT/LT05/C02/T1_L2/LT05_195028_20100731'),
+      //2016: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20160901')
+      //2024: ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_195028_20240806')
+    };
+
+
+// Palettes
+var palettes = require('users/gena/packages:palettes');
+var jet = palettes.misc.jet[7];
+var blueToRed = palettes.colorbrewer.RdYlBu[11];
+var trueColour = {bands: ['red', 'green', 'blue'], min: 0.04, max: 0.545};
+var visGlamos = {palette: ['gray', 'cyan', 'blue'], min: 0.0, max: 10.0, opacity: 0.8};
+
+// Definitions of bands
+var L5_bands = ee.List([ 'SR_B1', 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B7', 'ST_B6']);
+var L5_band_names = ee.List(['blue', 'green', 'red', 'nir', 'swir1', 'swir2', 'lst']);
+var L8_bands = ee.List([ 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7', 'ST_B10']);
+var L8_band_names = ee.List([ 'blue', 'green', 'red', 'nir', 'swir1', 'swir2', 'lst']);
+
+
+
+// Function to generate and display true color, LST, and a histogram for a selected band
+function generateTrueColorLSTandHistogram(glacier, band) {
+  var images = [];
+  var yearLabels = [];
+
+  Object.keys(landsat).forEach(function(year) {
+    var landsatImage = landsat[year];
+
+    if (!landsatImage) {
+      print('No Landsat image available for year: ', year);
+      return;  // Skip if no image is available for this year
+    }
+
+    // Function to apply scale factors for Landsat 5
+    var scaledL5 = function(image) {
+      var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+      var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+      return image.addBands(opticalBands, null, true).addBands(thermalBand, null, true);
+    };
+
+    // Function to apply scale factors for Landsat 8
+    var scaledL8 = function(image) {
+      var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+      var thermalBand = image.select('ST_B10').multiply(0.00341802).add(149.0);
+      return image.addBands(opticalBands, null, true).addBands(thermalBand, null, true);
+    };
+
+    // Process Landsat images based on the year
+    if (year < 2013) {
+      landsatImage = scaledL5(landsatImage).select(L5_bands, L5_band_names);
+    } else {
+      landsatImage = scaledL8(landsatImage).select(L8_bands, L8_band_names);
+    }
+
+    //print('Processed Landsat Image for year ' + year, landsatImage);
+
+    // Add true color composite to map
+    //Map.addLayer(landsatImage, trueColour, glacier + ' ' + year + ' True Color');
+
+    // Add LST (Land Surface Temperature) layer to map
+    var lstVis = {bands: ['lst'], min: 270, max: 320, palette: blueToRed};
+    //Map.addLayer(landsatImage.select('lst'), lstVis, glacier + ' ' + year + ' LST');
+
+    // Store images and year labels for histogram
+    images.push(landsatImage.select(band));
+    yearLabels.push(year);
+
+  });
+
+  // Center the map on the region of interest
+  Map.centerObject(roi, 12);
+
+  // Create a combined image with bands from different years for histogram
+  var combinedImage = ee.ImageCollection(images).toBands();
+
+  // Rename bands to match the corresponding years for clarity in the histogram
+  var bandNames = yearLabels.map(function(y) { return band + '_' + y; });
+  combinedImage = combinedImage.rename(bandNames);
+
+  // Generate histogram chart for the selected band
+  var histogram = ui.Chart.image.histogram({
+    image: combinedImage,
+    region: roi,
+    scale: 30
+  })
+  .setSeriesNames(yearLabels) // Add series names for clarity
+  .setOptions({
+    title: 'Value Distribution for Band: ' + band,
+    hAxis: {
+      title: band,
+      titleTextStyle: {italic: false, bold: true},
+    },
+    vAxis: {
+      title: 'Count',
+      titleTextStyle: {italic: false, bold: true},
+    },
+    colors: ['cf513e', '1d6b99', '0a9b2e', 'ffa500', '8b00ff'], // Different colors for each year
+  });
+
+  //print(histogram);
+}
+
+// Run the function for true color, LST, and histogram for the 'blue' band
+generateTrueColorLSTandHistogram('zmutt', 'blue');
+generateTrueColorLSTandHistogram('zmutt', 'green');
+generateTrueColorLSTandHistogram('zmutt', 'red');
+generateTrueColorLSTandHistogram('zmutt', 'nir');
+generateTrueColorLSTandHistogram('zmutt', 'swir1');
+generateTrueColorLSTandHistogram('zmutt', 'lst');
+
+
+
+//===========================================
+// 3. Include DEM for topographic information
+//===========================================
+
+function generateLayersForGlacierYear(year){
+  var images = [];
+  var yearLabels = [];
+
+  Object.keys(landsat).forEach(function(year) {
+    var landsatImage = landsat[year];
+
+    if (!landsatImage) {
+      print('No Landsat image available for year: ', year);
+      return;  // Skip if no image is available for this year
+    }
+
+    // Function to apply scale factors for Landsat 5
+    var scaledL5 = function(image) {
+      var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+      var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+      return image.addBands(opticalBands, null, true).addBands(thermalBand, null, true);
+    };
+
+    // Function to apply scale factors for Landsat 8
+    var scaledL8 = function(image) {
+      var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+      var thermalBand = image.select('ST_B10').multiply(0.00341802).add(149.0);
+      return image.addBands(opticalBands, null, true).addBands(thermalBand, null, true);
+    };
+
+    // Process Landsat images based on the year
+    if (year < 2013) {
+      landsatImage = scaledL5(landsatImage).select(L5_bands, L5_band_names);
+    } else {
+      landsatImage = scaledL8(landsatImage).select(L8_bands, L8_band_names);
+    }
+
+    //print('Processed Landsat Image for year ' + year, landsatImage);
+
+    // Add true color composite to map
+    //Map.addLayer(landsatImage, trueColour, glacier + ' ' + year + ' True Color');
+
+    // Add LST (Land Surface Temperature) layer to map
+    var lstVis = {bands: ['lst'], min: 270, max: 320, palette: blueToRed};
+    //Map.addLayer(landsatImage.select('lst'), lstVis, glacier + ' ' + year + ' LST');
+  
+ 
+  // DEM inclusion
+  var dem;
+  if (year < 2003) {
+    dem = ee.Image(dem_nasa).setDefaultProjection({ crs: crs, scale: 30 });
+  } else if (year >= 2003) {
+    dem = ee.ImageCollection("COPERNICUS/DEM/GLO30").filterBounds(roi).select('DEM').mosaic()
+      .setDefaultProjection({ crs: crs, scale: 30 });
+      dem = dem.select('DEM').rename('elevation');
+  } else if (year > 2016) {
+    dem = ee.Image(swissAlti).select('b1').rename('elevation')
+      .setDefaultProjection({ crs: crs, scale: 30 });
+  }
+
+  // Create derived layers (similar logic as in your original script)
+  var slope = ee.Terrain.slope(dem);
+  var aspect = ee.Terrain.aspect(dem);
+  var elevation = dem.select('elevation');
+
+  // Normalize LST, calculate indices, etc.
+
+var xyGrad = elevation.gradient();
+var gradient = xyGrad.select('x').pow(2).add(xyGrad.select('y').pow(2)).sqrt();
+gradient = gradient.rename('gradient');
+
+var TPI = elevation.select('elevation').subtract(elevation.select('elevation').convolve(ee.Kernel.circle(100,"pixels")));
+TPI = TPI.rename('TPI');
+
+// ==============================
+// 4. Normalize LST for Elevation
+// ==============================
+
+// Select elevation and lst
+var lst = landsatImage.select('lst');
+var img = elevation.addBands(lst);
+
+//Map.addLayer(lst, {min: 0, max: 300, palette: jet}, 'LST ' + year, false);
+
+// Perform linear regression
+var linearFit = img.select(['elevation', 'lst']).reduceRegion({
+  reducer: ee.Reducer.linearFit(),
+  geometry: roi,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// Extract the slope and intercept from the regression
+var regressionSlope = ee.Number(linearFit.get('scale'));
+var intercept = ee.Number(linearFit.get('offset'));
+
+
+// Calculate predicted LST and compute residuals
+var predictedLst = (elevation.multiply(regressionSlope)).add(intercept);
+
+var normalizedLst1 = lst.subtract(predictedLst).rename('normalizedLst');
+
+// partial debugging: LST normalized by regression produces holes in lstNir layer -> rescale to [0, 1]
+
+// Define function to normalize and rescale layer
+function rescale(image, bandName){
+  // Default values for scale and maxPixels
+  roi = roi;
+  var scale =  30;
+  var maxPixels =  1e9;
+  image = image;
+
+  // Select the band by name to ensure consistency
+  var band = image.select(bandName);
+
+  // Compute mean and standard deviation of the selected band
+  var stats = band.reduceRegion({
+    reducer: ee.Reducer.mean().combine({
+      reducer2: ee.Reducer.stdDev(),
+      sharedInputs: true
+    }),
+    geometry: roi,
+    scale: scale,
+    maxPixels: maxPixels
+  });
+
+  // Extract mean and standard deviation
+  var mean = ee.Number(stats.get(bandName + '_mean'));
+  var stdDev = ee.Number(stats.get(bandName + '_stdDev'));
+
+  // Set the threshold to 3 standard deviations
+  var lowerBound = mean.subtract(stdDev.multiply(3));
+  var upperBound = mean.add(stdDev.multiply(3));
+
+  // Mask values outside the desired range
+  var filteredImage = band.updateMask(
+    band.gte(lowerBound).and(band.lte(upperBound))
+  );
+
+  // Compute the min and max of the filtered image
+  var minMax = filteredImage.reduceRegion({
+    reducer: ee.Reducer.minMax(),
+    geometry: roi,
+    scale: scale,
+    maxPixels: maxPixels
+  });
+
+  var min = ee.Number(minMax.get(bandName + '_min'));
+  var max = ee.Number(minMax.get(bandName + '_max'));
+
+  // Rescale the image to the range [0, 1]
+  var rescaledImage = band.subtract(min).divide(max.subtract(min));
+
+  // Ensure no values are smaller than 0
+  var normalizedImage = rescaledImage.max(0);
+
+  // Return the normalized and rescaled image
+  return normalizedImage;
+}
+
+// apply to normalized lst
+var normalizedLst = rescale(normalizedLst1, 'normalizedLst');
+
+
+//===========================================
+// 5. Normalized Difference Index LST and NIR
+//===========================================
+
+// add relevant bands to one image and scale them
+
+// Function to scale image bands between 0 and 1
+function scaleImageBands(image) {
+  // Get min and max for each band
+  var stats = image.reduceRegion({
+    reducer: ee.Reducer.minMax(),
+    geometry: roi,
+    scale: 30,
+    bestEffort: true
+  });
+  
+  // Scale each band
+  var bands = image.bandNames();
+  var scaledBands = bands.map(function(band) {
+    var bandMin = ee.Number(stats.get(ee.String(band).cat('_min')));
+    var bandMax = ee.Number(stats.get(ee.String(band).cat('_max')));
+    
+    // Handle case where min and max values are the same
+    var scaledBand = ee.Algorithms.If(
+      bandMin.neq(bandMax),
+      image.select([band]).unitScale(bandMin, bandMax).rename([band]),
+      image.select([band]).subtract(bandMin).divide(bandMax.subtract(bandMin)).rename([band])
+    );
+    
+    return scaledBand;
+  });
+  
+  // Concatenate the scaled bands into a single image
+  return ee.ImageCollection(scaledBands).toBands().rename(bands);
+}
+
+var combinedImage = landsatImage.addBands(elevation).addBands(normalizedLst);
+// Map.addLayer(normalizedLst,{min:0.2, max:0.7, palette: jet}, 'LST_'+year);
+//Map.addLayer(landsatImage, trueColour, 'true color '+year); 
+
+// Define the function to calculate and add layers
+function addNormalizedDifferenceLayers(image, year, glacier) {
+  var lstElevRegression = 'normalizedLst';
+
+  var lstNir = image.normalizedDifference([lstElevRegression, 'nir']).rename('lstNir');
+ 
+ // Calculate Normalized Difference Indices used for the Classification:
+  var ndwi = image.normalizedDifference(['green', 'nir']).rename('ndwi');
+  var ndsi = image.normalizedDifference(['green', 'swir1']).rename('ndsi');
+  var ndvi = image.normalizedDifference(['nir', 'red']).rename('ndvi');
+  var ndri = image.normalizedDifference(['swir1', 'red']).rename('ndri');
+
+  //Map.addLayer(lstNir, {min: -1, max: 1, palette: blueToRed}, 'lstNir ' + glacier + year, false);
+
+  // Return the images for further use
+  return lstNir.addBands(ndwi).addBands(ndsi).addBands(ndvi).addBands(ndri);
+}
+
+// No scaling:
+// var combinedImage_scaled = scaleImageBands(combinedImage);
+
+// lstNir layers
+var lstNir_layers = addNormalizedDifferenceLayers(combinedImage, year);
+
+// Extract layers and assign variables
+var lstNir = lstNir_layers.select('lstNir');
+var ndri = lstNir_layers.select('ndri');
+var ndvi = lstNir_layers.select('ndvi');
+var ndsi = lstNir_layers.select('ndsi');
+var ndwi = lstNir_layers.select('ndwi');
+
+//========================================
+// 6. Create layers based on LST NIR Index
+//========================================
+
+// Edge detection filters: sobel
+
+var debris = debriscover;
+//print('A Sobel kernel', ee.Kernel.sobel());
+var sobel = ee.Kernel.sobel();
+var edges = lstNir.convolve(sobel);
+edges = edges.select('lstNir').rename('edges');
+
+// Low pass filter for smoothing
+var boxcar = ee.Kernel.square({radius: 5, units: 'pixels', normalize: true});
+var smoothLstNir = lstNir.convolve(boxcar);
+smoothLstNir = smoothLstNir.select('lstNir').rename('smooth');
+
+// Super pixel means (SNIC)
+var snic = ee.Algorithms.Image.Segmentation.SNIC({
+  image: lstNir,
+  size: 5,          // Control segment size
+  compactness: 1,
+  connectivity: 4
+});
+
+// Lock map zoom to maintain the desired scale of the segmentation computation.
+// Map.setLocked(false, 13, 13);
+
+// Generate superpixel means
+var clusters = snic.select('clusters');
+var superpixelMeans = lstNir.addBands(clusters).reduceConnectedComponents({
+  reducer: ee.Reducer.mean(),
+  labelBand: 'clusters'
+});
+//print('superPixelMeans', superpixelMeans);
+superpixelMeans = superpixelMeans.select('lstNir').rename('lstNir_superPixelMeans');
+
+
+//=========================================
+// 7. Create ground truth for 2003 and 2010
+//=========================================
+
+// 7.1 Create NDSI mask
+
+var ndsiThreshold = 0.4;
+var ndsiMask = ndsi.gt(ndsiThreshold);
+var binaryNdsiMask = ndsiMask.updateMask(ndsiMask).unmask(0);
+//Map.addLayer(binaryNdsiMask, {min: 0, max: 1, palette: ['black', 'white']}, 'NDSI Binary Mask', false);
+
+
+// 7.2 Rasterize glacier inventory
+
+// RGI 7.0 (2003)
+var rgi_fc = ee.FeatureCollection(rgi);//.filter(ee.Filter.or(ee.Filter.eq('anlys_id', rgiId1),ee.Filter.eq('anlys_id', rgiId2)));
+var rasterizedRgi = ee.Image(0).where(rgi_fc.reduceToImage(['area_km2'], ee.Reducer.first()), 1);
+//rasterizedRgi = rasterizedRgi.reproject({crs: crs,scale: 30 });
+//Map.addLayer(rasterizedRgi, {min: 0, max: 1, palette: ['black', 'white']}, 'RGI 7.0', false);
+
+// SGI 2010
+var sgi2010_fc = ee.FeatureCollection(sgi2010);//.filter(ee.Filter.eq('sgi-id', sgiId));
+var rasterizedSgi = ee.Image(0).where(sgi2010_fc.reduceToImage(['Shape_Area'], ee.Reducer.first()), 1);
+//rasterizedSgi = rasterizedSgi.reproject({crs: crs,scale: 30 });
+//print('rasterized SGI 2010', rasterizedSgi); 
+//Map.addLayer(rasterizedSgi, {min: 0, max: 1, palette: ['black', 'white']}, 'SGI 2010', false);
+
+// 7.3 Create ground truth
+
+// shapefiles from N.Mölg:
+var dc_1995 = ee.FeatureCollection(debris_cover1995);
+var rasterized_dc_1995 = ee.Image(0).where(dc_1995.reduceToImage(['area'], ee.Reducer.first()), 1);
+var groundTruth_1995 = rasterized_dc_1995.eq(1).rename('class');
+
+var dc_2001 = ee.FeatureCollection(debris_cover2001);
+var rasterized_dc_2001 = ee.Image(0).where(dc_2001.reduceToImage(['area'], ee.Reducer.first()), 1);
+var groundTruth_2001 = rasterized_dc_2001.eq(1).rename('class');
+
+var dc_2005 = ee.FeatureCollection(debris_cover2005);
+var rasterized_dc_2005 = ee.Image(0).where(dc_2005.reduceToImage(['area'], ee.Reducer.first()), 1);
+var groundTruth_2005 = rasterized_dc_2005.eq(1).rename('class');
+
+var dc_2010 = ee.FeatureCollection(debris_cover2010);
+var rasterized_dc_2010 = ee.Image(0).where(dc_2010.reduceToImage(['area'], ee.Reducer.first()), 1);
+var groundTruth_2010 = rasterized_dc_2010.eq(1).rename('class');
+
+var dc_2013 = ee.FeatureCollection(debris_cover2013);
+var rasterized_dc_2013 = ee.Image(0).where(dc_2013.reduceToImage(['area'], ee.Reducer.first()), 1);
+var groundTruth_2013 = rasterized_dc_2013.eq(1).rename('class');
+
+// RGI
+var groundTruth_2003 = rasterizedRgi.subtract(binaryNdsiMask);
+groundTruth_2003 = groundTruth_2003.eq(1).rename('class');
+
+// SGI 2010
+//var groundTruth_2010 = rasterizedSgi.subtract(binaryNdsiMask);
+//groundTruth_2010 = groundTruth_2010.eq(1).rename('class');
+//Map.addLayer(groundTruth_2010, {min: 0, max: 1, palette: ['black', 'white']}, 'ground truth 2010', false);
+
+// For 2016 take SGI2016 debriscover:
+var rasterizedDCG2016 = ee.Image(0).where(debriscover.reduceToImage(['area_km2'], ee.Reducer.first()), 1);
+var groundTruth_2016 = rasterizedDCG2016.eq(1).rename('class');
+
+var groundTruths = {
+  1993: groundTruth_1995,
+  1994: groundTruth_1995,
+  1995: groundTruth_1995,
+  1996: groundTruth_1995,
+  1997: groundTruth_1995,
+  1998: groundTruth_2001,
+  1999: groundTruth_2001,
+  2000: groundTruth_2001,
+  2001: groundTruth_2001,
+  2002: groundTruth_2001,
+  2003: groundTruth_2003,
+  2004: groundTruth_2005,
+  2005: groundTruth_2005,
+  2006: groundTruth_2005,
+  2007: groundTruth_2005,
+  2008: groundTruth_2010,
+  2009: groundTruth_2010,
+  2010: groundTruth_2010
+};
+var groundTruth = groundTruths[year];
+
+// Glacier Inventory Layer
+var sgi2016_fc = ee.FeatureCollection(sgi2016);//.filter(ee.Filter.eq('sgi-id', sgiId));
+var rasterizedSgi2016 = ee.Image(0).where(sgi2016_fc.reduceToImage(['area_km2'], ee.Reducer.first()), 1);
+
+var glacierInventory = rasterizedRgi;
+
+//===================================
+// 8. Combine all layers in one image
+//===================================
+
+// scale bands for comparability between different years
+lstNir = rescale(lstNir, 'lstNir');
+ndri = rescale(ndri, 'ndri');
+superpixelMeans = rescale(superpixelMeans, 'lstNir_superPixelMeans');
+edges = rescale(edges, 'edges');
+smoothLstNir = rescale(smoothLstNir, 'smooth');
+ndwi = rescale(ndwi, 'ndwi');
+ndsi = rescale(ndsi, 'ndsi');
+ndvi = rescale(ndvi, 'ndvi');
+slope = rescale(slope, 'slope');
+aspect = rescale(aspect, 'aspect');
+elevation = rescale(elevation, 'elevation');
+gradient = rescale(gradient, 'gradient');
+TPI = rescale(TPI, 'TPI');
+glacierInventory = glacierInventory.rename('glacierInventory');
+  
+  // Combine and export the final image
+  var image = lstNir
+    .addBands(ndri)
+    .addBands(superpixelMeans)
+    .addBands(edges)
+    .addBands(smoothLstNir)
+    .addBands(ndwi)
+    .addBands(ndsi)
+    .addBands(ndvi)
+    .addBands(slope)
+    .addBands(aspect)
+    .addBands(elevation)
+    .addBands(gradient)
+    .addBands(TPI)
+    .addBands(glacierInventory);
+
+//=======
+// Export
+//=======
+  
+  // export to drive for download
+  /*
+  Export.image.toDrive({
+    image: image.toDouble(),
+    description: 'zmutt_'+ year + '_layers_drive',
+    folder: 'GEE_Exports_input_layers_DCG',
+    region: roi,
+    scale: 30,
+    crs: crs,
+    maxPixels: 1e9
+  });
+  */
+  
+  //export to assets for further use in GEE
+  Export.image.toAsset({
+    image: image,
+    description: 'zmutt_'+ year + '_layers_assets',
+    region: roi,
+    // update assetId
+    assetId: 'projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript/zmutt_'+ year + '_layers_assets',
+    scale:30,
+    crs: crs
+  });
+
+
+// Define visualization parameters for each band
+var bandVisParams = {
+  'lstNir': {min: 0, max: 1, palette: blueToRed},
+  'ndri': {min: 0, max: 1, palette: ['green', 'white', 'brown']},
+  'lstNir_superPixelMeans': {min: 0, max: 1, palette: blueToRed},
+  'edges': {min: 0, max: 1, palette: blueToRed},
+  'smooth': {min: 0, max: 1, palette: blueToRed},
+  'ndwi': {min: 0, max: 1, palette: ['blue', 'white', 'green']},
+  'ndsi': {min: 0, max: 1, palette: ['darkblue','lightblue', 'white']},
+  'ndvi': {min: 0, max: 1, palette: ['red','orange', 'yellow', 'green']},
+  'slope': {min: 0, max: 1, palette: jet},
+  'aspect': {min: 0, max: 1, palette: jet},
+  'elevation': {min: 0, max: 1, palette: jet},
+  'gradient': {min: 0, max: 1, palette: jet},
+  'TPI': {min: 0, max: 1, palette: jet},
+  'glacierInventory': {min: 0, max: 1, palette: ['white', 'blue']}
+};
+var glacier = 'zmutt';
+/*
+Map.addLayer(lstNir,  {min: 0, max: 1, palette: blueToRed},   'lstNir '+glacier+year , false);
+Map.addLayer(ndri,    {min: 0, max: 1, palette: ['green', 'white', 'brown']}, 'ndri '+glacier+year, false);
+Map.addLayer(superpixelMeans,{min: 0, max: 1, palette: blueToRed},  'super pixel means '+glacier+year , false);
+Map.addLayer(edges,   {min: 0, max: 1, palette: blueToRed},         'edges '+glacier+year , false);
+Map.addLayer(smoothLstNir,  {min: 0, max: 1, palette: blueToRed} ,  'smooth '+glacier+year, false);
+Map.addLayer(ndwi,    {min: 0, max: 1, palette: ['blue', 'white', 'green']}, 'ndwi '+glacier+year , false);
+Map.addLayer(ndsi,    {min: 0, max: 1, palette: ['darkblue','lightblue', 'white']}, 'ndsi '+glacier+year, false);
+Map.addLayer(ndvi,    {min: 0, max: 1, palette: ['red','orange', 'yellow', 'green']}, 'ndvi '+glacier+year, false);
+Map.addLayer(slope,   {min: 0, max: 1, palette: jet},   'slope '+glacier+year , false);
+Map.addLayer(aspect,  {min: 0, max: 1, palette: jet},   'aspect '+glacier+year, false);
+Map.addLayer(elevation,{min: 0, max: 1, palette: jet},  'elevation '+glacier+year, false);
+Map.addLayer(gradient,{min: 0, max: 1, palette: jet},   'gradient_'+glacier+year, false);
+Map.addLayer(TPI,     {min: 0, max: 1, palette: jet},   'TPI '+glacier+year, false);
+Map.addLayer(glacierInventory, {min: 0, max: 1, palette: ['white', 'blue']}, 'glacier inventory '+glacier+year, false);
+*/
+
+var bands = ['lstNir', 'ndri', 'lstNir_superPixelMeans', 'edges', 'smooth', 'ndwi', 'ndsi', 'ndvi', 'slope', 'aspect', 'elevation', 'gradient', 'TPI', 'glacierInventory'];
+});
+}
+
+// Define glaciers and years
+var glacierYearCombinations = [
+  { year: 2002 },
+  /*
+  { year: 1995 },
+  { year: 1996 },
+  { year: 1997 },
+  { year: 1998 },
+  { year: 1999 },
+  { year: 2000 },
+  { year: 2001 },
+  { year: 2002 },
+  { year: 2003 },
+  { year: 2004 },
+  { year: 2005 },
+  { year: 2006 },
+  { year: 2007 },
+  { year: 2008 },
+  { year: 2009 },
+  { year: 2010 }
+*/
+
+];
+
+
+// Loop over glacier-year combinations
+glacierYearCombinations.forEach(function(combo) {
+  generateLayersForGlacierYear(combo.year);
+});

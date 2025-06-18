@@ -1,0 +1,908 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var poi_zmutt = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    ee.Geometry.Point([7.642595783012829, 46.00088355131704]),
+    poi_oberaletsch = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    ee.Geometry.Point([7.969479269132309, 46.42247658348475]),
+    poi_unteraar = 
+    /* color: #ffc82d */
+    /* shown: false */
+    ee.Geometry.Point([8.18837776104397, 46.57109412065738]),
+    roi_unteraar = 
+    /* color: #00ffff */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[8.093277358211939, 46.605423677609075],
+          [8.093277358211939, 46.52894816125691],
+          [8.286568068661158, 46.52894816125691],
+          [8.286568068661158, 46.605423677609075]]], null, false),
+    unteraar_gT_polygon = 
+    /* color: #98ff00 */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[8.258587264217878, 46.565405834410505],
+          [8.255840682186628, 46.572014645501696],
+          [8.233181380428816, 46.570834559720566],
+          [8.223911666073347, 46.570834559720566],
+          [8.208805464901472, 46.57673473186028],
+          [8.18786277691319, 46.5774427093805],
+          [8.156963729061628, 46.599149531830086],
+          [8.147350691952253, 46.58664557598989],
+          [8.16039695660069, 46.572486672624684],
+          [8.175846480526472, 46.56753018293315],
+          [8.156963729061628, 46.554546753810335],
+          [8.130871199764753, 46.573430714545886],
+          [8.118511580624128, 46.56611395982841],
+          [8.155247115292097, 46.53825405787602],
+          [8.16417350689366, 46.53825405787602],
+          [8.19610252300694, 46.55903228968079],
+          [8.225628279842878, 46.55667152754723]]]),
+    zmutt_gT_polygon = 
+    /* color: #00ffff */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[7.6625092885442125, 46.00139938073074],
+          [7.6570161244817125, 46.004976554975336],
+          [7.6453431508489, 46.00449961177317],
+          [7.6322968862004625, 46.00187635066049],
+          [7.626460399384056, 46.0023533164783],
+          [7.6199372670598375, 46.00759966908666],
+          [7.629893626923119, 46.01236864879793],
+          [7.6233704945989, 46.01737563495285],
+          [7.607234325165306, 46.01713721732037],
+          [7.605517711395775, 46.00116089422388],
+          [7.6089509389348375, 45.99543690966295],
+          [7.6116975209660875, 45.99400582100345],
+          [7.6020844838567125, 45.98661127337282],
+          [7.607234325165306, 45.982317211721835],
+          [7.614787425751244, 45.97993147799447],
+          [7.628520335907494, 45.980408632964014],
+          [7.631953563446556, 45.982317211721835],
+          [7.635730113739525, 45.989235258192736],
+          [7.639506664032494, 45.99114353266096],
+          [7.657359447235619, 45.99329026279577]]]),
+    oberaletsch_gT_polygon = 
+    /* color: #bf04c2 */
+    /* shown: false */
+    ee.Geometry.Polygon(
+        [[[7.9640601590144655, 46.414936956365],
+          [7.976763100908997, 46.40972936809718],
+          [7.990496011065247, 46.40310080932459],
+          [8.003542275713684, 46.400970030089226],
+          [8.008005471514466, 46.40381105057684],
+          [8.008348794268372, 46.40925592632512],
+          [7.9997657254207155, 46.4156470435118],
+          [7.987062783526184, 46.42109073779113],
+          [7.9819129422175905, 46.4246406803959],
+          [7.987062783526184, 46.4317398721506],
+          [7.991869302080872, 46.43931132424458],
+          [7.990496011065247, 46.44451608733249],
+          [7.985346169756653, 46.44853760916607],
+          [7.979509682940247, 46.45918138094234],
+          [7.973329873369934, 46.462255861057976],
+          [7.957880349444153, 46.46178287541715],
+          [7.9558204129207155, 46.456343245205126],
+          [7.960626931475403, 46.44640860517826],
+          [7.9681800320613405, 46.44049426860716],
+          [7.956850381182434, 46.428663669244216],
+          [7.9448340847957155, 46.438838139308366],
+          [7.928011269854309, 46.43576233705923],
+          [7.914965005205872, 46.42582394323029],
+          [7.913935036944153, 46.42038072153179],
+          [7.920458169268372, 46.41754056403283],
+          [7.931444497393372, 46.41919734055254],
+          [7.935564370440247, 46.42038072153179],
+          [7.9517005398738405, 46.40830903045258],
+          [7.963373513506653, 46.405941718855146],
+          [7.966463418291809, 46.40972936809718]]]),
+    roi_oberaletsch = 
+    /* color: #ff0000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[7.912561745928528, 46.462610294473386],
+          [7.912561745928528, 46.398720480474125],
+          [8.012468667315247, 46.398720480474125],
+          [8.012468667315247, 46.462610294473386]]], null, false),
+    groundTruth_zmutt_2003 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_zmutt2003"),
+    groundTruth_zmutt_2010 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_zmutt2010"),
+    groundTruth_zmutt_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_zmutt2016"),
+    roi_zmutt = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[7.599852885957441, 46.01744963942263],
+          [7.599852885957441, 45.97761969922328],
+          [7.661650981660566, 45.97761969922328],
+          [7.661650981660566, 46.01744963942263]]], null, false),
+    groundTruth_oberaletsch_2003 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_oberaletsch2003"),
+    groundTruth_oberaletsch_2010 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_oberaletsch2010"),
+    groundTruth_oberaletsch_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_oberaletsch2016"),
+    groundTruth_unteraar_2003 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_unteraar2003"),
+    groundTruth_unteraar_2010 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_unteraar2010"),
+    groundTruth_unteraar_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_unteraar2016"),
+    groundTruth_belvedere_2003 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_belvedere2003"),
+    roi_belvedere = 
+    /* color: #98ff00 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[7.882228685119119, 45.97116574008611],
+          [7.882228685119119, 45.929153352388795],
+          [7.9320104844355255, 45.929153352388795],
+          [7.9320104844355255, 45.97116574008611]]], null, false),
+    groundTruth_satopanth_2003 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/single_scenes_regression_new/groundTruth_satopanth2003"),
+    roi_satopanth = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[79.26526797759985, 30.816163937992354],
+          [79.26526797759985, 30.729438686838353],
+          [79.42868960845922, 30.729438686838353],
+          [79.42868960845922, 30.816163937992354]]], null, false),
+    coherence_zmutt_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/S1A_IW_SLC_20160813_20160825_Stack_ifg_2_flt_deb_TC_coh_IW2_VV_13Aug2016_25Aug2016"),
+    rf_input_unteraar_2018 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/unteraar_2018_layers_assets"),
+    rf_input_unteraar_2020 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/unteraar_2020_layers_assets"),
+    rf_input_oberaletsch_2018 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/oberaletsch_2018_layers_assets"),
+    rf_input_oberaletsch_2020 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/oberaletsch_2020_layers_assets"),
+    rf_input_belvedere_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/belvedere_2016_layers_assets"),
+    rf_input_belvedere_2020 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/belvedere_2020_layers_assets"),
+    rf_input_belvedere_2018 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/belvedere_2018_layers_assets"),
+    rf_input_belvedere_2022 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/belvedere_2022_layers_assets"),
+    rf_input_oberaletsch_2022 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/oberaletsch_2022_layers_assets"),
+    rf_input_unteraar_2022 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/unteraar_2022_layers_assets"),
+    sentinel1 = ee.ImageCollection("COPERNICUS/S1_GRD"),
+    rf_input_unteraar_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/unteraar_2016_layers_assets"),
+    rf_input_oberaletsch_2016 = ee.Image("projects/ee-lorenamuellerthesis/assets/RF_inputs/fromScript/rf_inputs_automatedScript_inSAR/oberaletsch_2016_layers_assets"),
+    rgi7 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/rgi_central_europe"),
+    belvedere18 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/belvedere_outlines/belvedere_2018"),
+    belvedere21 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/belvedere_outlines/belvedere_2021"),
+    belvedere23 = ee.FeatureCollection("projects/ee-lorenamuellerthesis/assets/belvedere_outlines/belvedere_2023");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+/*
+Refining Debris-Covered Glacier Outlines Using Land Surface Temperature Data
+MSc Thesis Lorena Müller
+
+Different Glaciers Approach II
+
+ In this script, the input layers for the random forest classification are imported and the classification 
+ is performed for one year at a time. Two glaciers are used for training and a third one for testing. 
+ The classifier loops through 20 randomly generated band combinations. The results of these 20 classifications
+ are combined in a single final image. 
+ RGI 7.0 glacier outlines (including snow/ice) are included as one of the input layers. 
+
+ Contents
+ 1. Initialization and Imports          // choose year of interest and glaciers for training and testing
+ 2. Prepare Training Data and Classification
+ 3. Loop Through Band Combinations
+ 4. Final Classification and Evaluation
+ 5. Smooth and vectorize final classification mask
+ 6. Export
+ 
+*/
+
+//=======================================
+// 1. Initialization and Imports
+//=======================================
+
+// Define the year for which to run the classification (2003, 2010, or 2016)
+var selectedYear = 2022;                // Choose between 2010 and 2016
+
+//var thr = 12;
+// Define the glaciers to use for training and testing
+var trainGlacier1 = 'unteraar';  
+var trainGlacier2 = 'unteraar';
+var testGlacier = 'belvedere';           // Choose between zmutt, unteraar or oberaletsch. Adjust training glcaiers accordingly. 
+                                     // For Belvedere and Satopanth, statistical validation is not possible with this approach.
+
+var trainGlaciers = [trainGlacier1
+//, trainGlacier2
+];
+
+// Define bands to use for classification
+var bands = [ 'lstNir', 'ndri', 'lstNir_superPixelMeans','edges', 'smooth',  'ndwi', 'ndsi', 'ndvi', 'slope',  'aspect', 'elevation', 'gradient', 'TPI', 'glacierInventory', 'inSAR', 'normalizedLst', 'coherence', 'VH'];
+
+var palettes = require('users/gena/packages:palettes');
+var jet = palettes.misc.jet[7];
+var visClass = {min: 0, max: 1, palette: ['white', 'black']};
+var blueToRed = palettes.colorbrewer.RdYlBu[11];
+
+// Define the glacier input data as a dictionary
+var glaciers = {
+ /* 'zmutt': {
+    roi: roi_zmutt,
+   
+    input2016: rf_input_zmutt_2016,
+    groundTruth2003: groundTruth_zmutt_2003,
+    groundTruth2010: groundTruth_zmutt_2010,
+    groundTruth2016: groundTruth_zmutt_2016,
+    gT_polygon: zmutt_gT_polygon
+    //coherence: coherence_zmutt_2016
+  },
+  */
+  'unteraar': {
+    roi: roi_unteraar,
+
+    input2016: rf_input_unteraar_2016,
+    buffer: rf_input_unteraar_2016.select('buffer_mask'),
+    input2018: rf_input_unteraar_2018,
+    input2020: rf_input_unteraar_2020,
+    input2022: rf_input_unteraar_2022,
+    groundTruth2016: groundTruth_unteraar_2016,
+    gT_polygon: unteraar_gT_polygon 
+  },
+  'oberaletsch': {
+    roi: roi_oberaletsch,
+    buffer: rf_input_oberaletsch_2016.select('buffer_mask'),
+    input2016: rf_input_oberaletsch_2016,
+    input2018: rf_input_oberaletsch_2018,
+    input2020: rf_input_oberaletsch_2020,
+    input2022: rf_input_oberaletsch_2022,
+    groundTruth2016: groundTruth_oberaletsch_2016,
+    gT_polygon: oberaletsch_gT_polygon 
+  }
+  ,
+  'belvedere':{
+    roi: roi_belvedere,
+    buffer: rf_input_belvedere_2016.select('buffer_mask'),
+    input2016: rf_input_belvedere_2016,
+    input2018: rf_input_belvedere_2018,
+    input2020: rf_input_belvedere_2020,
+    input2022: rf_input_belvedere_2022,
+    groundTruth2016: groundTruth_belvedere_2003,
+    gT_polygon: roi_belvedere
+  }
+  /*,
+  'satopanth':{
+    roi: roi_satopanth,
+    input2003: rf_input_satopanth_2003,
+    input2010: rf_input_satopanth_2003,
+    input2016: rf_input_satopanth_2016,
+    groundTruth2003: groundTruth_satopanth_2003,
+    groundTruth2010: groundTruth_satopanth_2003,
+    groundTruth2016: groundTruth_satopanth_2003,
+    gT_polygon: roi_satopanth 
+  }
+  */
+};
+
+
+
+// Function to get the correct input and ground truth based on the selected year
+function getInputAndGroundTruth(glacierData, year, glacierName) {
+  var input, groundTruth;
+  
+  if (year === 2016) {
+    input = glacierData.input2016;
+    groundTruth = glacierData.groundTruth2016;
+  } else if (year === 2018) {
+    input = glacierData.input2018;
+    groundTruth = glacierData.groundTruth2016;
+
+  } else if (year === 2020){
+    input = glacierData.input2020;
+    groundTruth = glacierData.groundTruth2016;
+  }else if (year === 2022){
+   input = glacierData.input2022;
+    groundTruth = glacierData.groundTruth2016; 
+  }
+  
+  return {
+    input: input,
+    groundTruth: groundTruth
+  };
+}
+
+// Load glacier data for the test glacier
+var testGlacierData = glaciers[testGlacier];
+var testInputAndGT = getInputAndGroundTruth(testGlacierData, selectedYear, testGlacier);  // Pass glacierName as third argument
+var testInput = testInputAndGT.input;
+var testGroundTruth = testInputAndGT.groundTruth;
+var testRoi = testGlacierData.roi;
+
+
+// Mask Ground Truth data using the polygon
+function maskGroundTruth(groundTruth, polygon) {
+  var clippedGT = groundTruth//.clip(polygon);
+  var maskedGT = groundTruth.where(clippedGT.mask().not(), 0);
+  return maskedGT;
+}
+
+var maskedTestGroundTruth = maskGroundTruth(testGroundTruth, testGlacierData.gT_polygon);
+
+// Apply mask to the ground truth for each glacier
+var maskedGroundTruths = {
+  'unteraar': maskGroundTruth(getInputAndGroundTruth(glaciers['unteraar'], selectedYear, 'unteraar').groundTruth, glaciers['unteraar'].gT_polygon),
+  'oberaletsch': maskGroundTruth(getInputAndGroundTruth(glaciers['oberaletsch'], selectedYear, 'oberaletsch').groundTruth, glaciers['oberaletsch'].gT_polygon),
+  'belvedere': maskGroundTruth(getInputAndGroundTruth(glaciers['belvedere'], selectedYear, 'belvedere').groundTruth, glaciers['belvedere'].gT_polygon)
+  //'zmutt': maskGroundTruth(getInputAndGroundTruth(glaciers['zmutt'], selectedYear, 'zmutt').groundTruth, glaciers['zmutt'].gT_polygon)
+  
+};
+
+
+//=================================================================================================
+
+// Dictionary to store buffers
+var buffers = {};
+
+// Function to process a given ROI
+function processGlacierBuffer(roi, name) {
+  // Load Copernicus DEM
+  var dem = ee.ImageCollection("COPERNICUS/DEM/GLO30")
+    .filterBounds(roi)
+    .select('DEM')
+    .mosaic()
+    .setDefaultProjection({crs: 'EPSG:4326', scale: 30})
+    .rename('elevation');
+
+  // Load RGI Glacier Outlines
+  var rgi = ee.FeatureCollection(rgi7).filterBounds(roi);
+
+  // Clip DEM to glacier areas
+  var demClipped = dem.clip(roi).clip(rgi);
+
+  // Normalize DEM within the RGI
+  var minElev = demClipped.reduceRegion({
+    reducer: ee.Reducer.min(),
+    geometry: rgi,
+    scale: 30,
+    bestEffort: true
+  }).getNumber('elevation');
+
+  var maxElev = demClipped.reduceRegion({
+    reducer: ee.Reducer.max(),
+    geometry: rgi,
+    scale: 30,
+    bestEffort: true
+  }).getNumber('elevation');
+
+  // Ensure no division by zero
+  var range = maxElev.subtract(minElev);
+  var normDEM = ee.Algorithms.If(
+    range.gt(0),
+    demClipped.subtract(minElev).divide(range).rename("normalized_elevation"),
+    ee.Image(0)
+  );
+
+  // Convert to integer (for vectorization)
+  normDEM = ee.Image(normDEM).multiply(100).toInt();
+
+  // Mask only areas where elevation is valid
+  var lowElevMask = normDEM.lte(10).selfMask();
+
+  // Convert raster to vector (only inside RGI)
+  var lowElevVector = lowElevMask.reduceToVectors({
+    geometryType: 'polygon',
+    reducer: ee.Reducer.countEvery(),
+    scale: 30,
+    bestEffort: true,
+    geometry: rgi
+  });
+
+  // **Buffer Creation**
+  var lowElevBuffer = lowElevVector.map(function(f) {
+    return f.buffer(300);
+  });
+
+  var glacierBuffer = rgi.map(function(f) {
+    return f.buffer(100);
+  });
+
+  // **Merge and dissolve buffers**
+  var finalBuffer = glacierBuffer.merge(lowElevBuffer).union();
+
+  // **Store buffer in dictionary**
+  buffers[name] = finalBuffer;
+
+  // **Display Results**
+  Map.addLayer(normDEM, {min: 0, max: 100, palette: ['blue', 'white', 'red']}, "Normalized DEM - " + name, false);
+  Map.addLayer(finalBuffer, {color: 'red'}, 'Final Buffer - ' + name, false);
+}
+
+// **Define ROIs and names**
+var roiDict = {
+ // 'zmutt': glaciers['zmutt'].roi,
+  'unteraar':glaciers['unteraar'].roi,
+  'oberaletsch': glaciers['oberaletsch'].roi,
+  'belvedere': glaciers['belvedere'].roi
+};
+
+// **Run function for each ROI**
+Object.keys(roiDict).forEach(function(name) {
+  processGlacierBuffer(roiDict[name], name);
+});
+
+// **Print Buffers Dictionary**
+print('Buffers:', buffers);
+
+// Center map on the first ROI
+Map.centerObject(testRoi, 12);
+
+
+//=================================================================================================
+var updatedInputs = {
+  'unteraar': (getInputAndGroundTruth(glaciers['unteraar'], selectedYear, 'unteraar').input).clip(buffers['unteraar']),
+  'oberaletsch': (getInputAndGroundTruth(glaciers['oberaletsch'], selectedYear, 'oberaletsch').input).clip(buffers['oberaletsch']),
+  'belvedere': (getInputAndGroundTruth(glaciers['belvedere'], selectedYear, 'belvedere').input).clip(buffers['belvedere'])
+  //'zmutt': getInputAndGroundTruth(glaciers['zmutt'], selectedYear, 'zmutt').input
+};
+var updatedTrainingInputs = {
+  'unteraar': (getInputAndGroundTruth(glaciers['unteraar'], 2016, 'unteraar').input).clip(buffers['unteraar']),
+  'oberaletsch': (getInputAndGroundTruth(glaciers['oberaletsch'], 2016, 'oberaletsch').input).clip(buffers['oberaletsch']),
+  'belvedere': (getInputAndGroundTruth(glaciers['belvedere'], 2016, 'belvedere').input).clip(buffers['belvedere'])
+  //'zmutt': getInputAndGroundTruth(glaciers['zmutt'], selectedYear, 'zmutt').input
+};
+testInput = updatedInputs[testGlacier];
+
+//print('updated inputs', updatedInputs);
+Map.addLayer(maskedGroundTruths[testGlacier], visClass, 'Ground Truth ' + selectedYear);
+//Map.addLayer(updatedInputs[testGlacier], {bands: 'coherence'}, 'coherence' + selectedYear, false);
+//Map.addLayer(updatedInputs[testGlacier], {bands: 'normalizedLst', palette: jet}, 'normalized LST' + selectedYear, false);
+/*
+Map.addLayer(updatedInputs[testGlacier], {bands: 'slope', palette: jet}, 'slope' + selectedYear, false);
+Map.addLayer(updatedInputs[testGlacier], {bands: 'ndvi', palette: jet}, 'ndvi' + selectedYear, false);
+Map.addLayer(updatedInputs[testGlacier], {bands: 'ndsi', palette: jet}, 'ndsi' + selectedYear, false);
+Map.addLayer(updatedInputs[testGlacier], {bands: 'ndri', palette: jet}, 'ndri' + selectedYear, false);
+Map.addLayer(updatedInputs[testGlacier], {bands: 'ndwi', palette: jet}, 'ndwi' + selectedYear, false);
+*/
+
+//Define band combinations
+
+// Band combinations: 20 combinations with 5-6 input layers per combination
+/*
+var bandCombinations = [
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'ndwi', 'coherence', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'ndwi', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndsi', 'ndwi', 'coherence', 'ndvi','VH'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'ndwi'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'coherence'],
+  ['slope', 'normalizedLst', 'ndri', 'ndwi', 'coherence', 'VH'],
+  ['slope', 'normalizedLst', 'ndsi', 'ndwi', 'coherence'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'coherence', 'VH'],
+  ['normalizedLst', 'ndri', 'ndsi', 'ndwi', 'coherence'],
+  ['slope', 'normalizedLst', 'ndri', 'ndsi', 'ndvi'],
+  ['slope', 'normalizedLst', 'ndsi', 'ndwi', 'ndvi'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'ndvi', 'VH'],
+  ['slope', 'normalizedLst', 'ndri', 'ndwi', 'ndvi'],
+  ['slope', 'normalizedLst', 'ndsi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'ndri', 'ndwi', 'coherence', 'ndvi'],
+  ['normalizedLst', 'ndri', 'ndsi', 'ndwi', 'ndvi', 'VH']
+];
+*/
+var bandCombinations = [
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'coherence'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndsi', 'ndwi', 'coherence', 'ndvi', 'VH'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'coherence', 'ndvi'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'coherence', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndwi', 'coherence'],
+  ['slope', 'lstNir_superPixelMeans', 'ndsi', 'ndwi', 'coherence', 'VH'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'coherence', 'VH'],
+  ['lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'coherence'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndsi', 'ndwi', 'ndvi', 'VH'],
+  ['slope', 'ndri', 'ndsi', 'ndwi', 'ndvi'],
+  ['slope', 'lstNir_superPixelMeans', 'ndri', 'ndwi', 'ndvi', 'VH'],
+  ['slope', 'lstNir_superPixelMeans', 'ndsi', 'coherence', 'ndvi'],
+  ['slope', 'ndri', 'ndwi', 'coherence', 'ndvi'],
+  ['lstNir_superPixelMeans', 'ndri', 'ndsi', 'ndwi', 'ndvi', 'VH']
+];
+
+
+// Visualization parameters
+var visClass = {min: 0, max: 1, palette: ['white', 'black']};
+
+// Array to store band combinations and validation accuracies
+var accuracyList = [];
+
+//=======================================
+// 2. Prepare Training Data and Classification
+//=======================================
+
+//var trainRoi = buffers[trainGlaciers];
+//var testRoi = buffers[testGlacier];
+// Function to train a classifier, classify, and evaluate accuracy
+function runModel(bands, trainGlaciers, testGlacier) {
+
+  // 2.1 Prepare training data for the selected glaciers
+  function prepareTrainingData(glacier, input, groundTruth, bands, region) {
+    return input.select(bands).addBands(groundTruth).stratifiedSample({
+      numPoints:  3000,
+      classBand: 'class',
+      region: region,
+      scale: 30,
+      geometries: true
+    });
+  }
+
+  var trainingData = trainGlaciers.reduce(function(data, glacier) {
+    var glacierData = glaciers[glacier];
+    var glacierTrainingData = prepareTrainingData(glacier, updatedTrainingInputs[glacier], maskedGroundTruths[glacier], bands, glacierData.roi);
+    return data.merge(glacierTrainingData);
+  }, ee.FeatureCollection([]));
+  
+  // 2.2 Balance training data (oversampling)
+  var class0 = trainingData.filter(ee.Filter.eq('class', 0));  // Non-DCG
+  var class1 = trainingData.filter(ee.Filter.eq('class', 1));  // DCG
+
+  // Oversample the minority class (debris)
+  function oversample(minorityClass, targetSize) {
+    var minorityCount = minorityClass.size();
+    var replicationFactor = targetSize.divide(minorityCount).ceil();
+    var replicated = ee.FeatureCollection(ee.List.sequence(0, replicationFactor.subtract(1))
+      .map(function(i) { return minorityClass; }))
+      .flatten();
+    return replicated.randomColumn().limit(targetSize);
+  }
+
+  var maxClassSize = class0.size();
+  var replicatedClass1 = oversample(class1, maxClassSize);
+  var balancedDataset = class0.merge(replicatedClass1);
+
+  // 2.3 Train classifier on the training data
+  var classifier = ee.Classifier.smileRandomForest(50).train({
+    features: balancedDataset,
+    classProperty: 'class',
+    inputProperties: bands
+  });
+
+  // 2.4 Apply classifier to the testGlacier input
+  var classifiedTestGlacier = testInput.select(bands).classify(classifier);
+
+  // 2.5 Sample test data from classified image and ground truth
+  var testSamples = classifiedTestGlacier.addBands(maskedTestGroundTruth)
+    .stratifiedSample({
+      numPoints: 2000,
+      classBand: 'class',
+      region: buffers[testGlacier],
+      scale: 30,
+      geometries: true
+    });
+
+  // 2.6 Evaluate the classifier
+  var validationSample = testSamples.errorMatrix('class', 'classification');
+  var accuracy = validationSample.accuracy();
+  var results = classifier.explain();
+
+  // Add accuracy and bands to the list
+  accuracyList.push(ee.Feature(null, {
+    'Bands': bands.join(', '), 
+    'Accuracy': accuracy,
+    'importance':results.get('importance')
+  }));
+
+  return classifiedTestGlacier; // Return the classified image for mapping
+}
+
+//print('trainingData', trainingData);
+
+//=======================================
+// 3. Loop Through Band Combinations
+//=======================================
+var classifiedImages = []; // Array to store classified images
+var validClassifications = []; // Array to store valid classified images based on accuracy threshold
+
+bandCombinations.forEach(function(bands) {
+  var classifiedImage = runModel(bands, trainGlaciers, testGlacier);
+  var accuracy = accuracyList[accuracyList.length - 1].get('Accuracy'); // Get the last added accuracy
+  accuracy = ee.Number(accuracy); // Convert to ee.Number for comparison
+
+    classifiedImages.push(classifiedImage);
+    validClassifications.push(bands.join(', ')); // Keep track of valid band combinations
+
+
+});
+
+//=======================================
+// 4. Final Classification and Evaluation
+//=======================================
+if (classifiedImages.length > 0) {
+  var combinedClassification = ee.ImageCollection.fromImages(classifiedImages).sum();
+  //var classificationCollection = ee.ImageCollection(classifiedImages);
+  //print('combinedClassification', combinedClassification);
+  //print(classificationCollection.limit(10));
+
+// 4.1 Calculate Otsu's threshold
+
+// otsu: thr = 9
+// manually: 
+var thr = 19;
+
+//=======================================================================================
+ Map.addLayer(combinedClassification, {min:0, max:20, palette: jet}, 'Final Classification sum', false);
+  
+// Load the glacier likelihood image (replace with your actual image)
+var image = combinedClassification;  // Replace with actual image ID
+
+// Define seed pixels: where pixel value is exactly 20
+var seedMask = image.eq(20);
+
+// Convert seed mask to binary mask (selfMask removes 0 values)
+var seeds = seedMask.selfMask(); 
+
+// Define the threshold for growing
+var threshold = 10;  // Adjust as needed
+
+// Function to expand glacier mask iteratively
+function regionGrow(img, seedMask, threshold) {
+    var prevMask = seedMask;  // Start with seed pixels
+    var growing = true;  // Flag to track changes
+    
+    // Define a function for one iteration of region growing
+    function growStep(currentMask) {
+        // Find neighboring pixels
+        var neighbors = currentMask.focalMax(1, 'square', 'pixels');
+        
+        // Select new pixels where value ≥ threshold
+        var newMask = img.gte(threshold).updateMask(neighbors);
+        
+        // Merge with the previous mask
+        var updatedMask = currentMask.or(newMask);
+        
+        return updatedMask;
+    }
+    
+    // Iterate multiple times (region growing)
+    for (var i = 0; i < 10; i++) { // Adjust iteration count as needed
+        var newMask = growStep(prevMask);
+        
+        // Check if the mask has changed
+        var diff = newMask.neq(prevMask);
+        var hasNewPixels = diff.reduceRegion({
+            reducer: ee.Reducer.anyNonZero(),
+            geometry: img.geometry(),
+            scale: 30,
+            maxPixels: 1e9
+        }).values().get(0);
+        
+        if (!hasNewPixels) {
+            growing = false;
+            break;
+        }
+        
+        prevMask = newMask;
+    }
+    
+    return prevMask;
+}
+
+// Apply region growing
+var glacierMask = regionGrow(image, seeds, threshold);
+
+var filledGlacier = glacierMask.focalMode(2, 'square', 'pixels')
+                               //.focalMax(1, 'square', 'pixels');
+// Visualize results
+//Map.addLayer(image, {min: 0, max: 20, palette: ['black', 'blue', 'white']}, 'Original Image');
+Map.addLayer(glacierMask, {palette: ['cyan']}, 'Detected Glacier');
+Map.addLayer(filledGlacier, {palette: ['red']}, 'Final Glacier Mask (Refined)', false);
+print('glacierMask', glacierMask);
+print('filledGlacier', filledGlacier);
+
+// Define the structuring element (2-pixel radius)
+var kernel = ee.Kernel.cross(1); // A circular kernel to avoid square artifacts
+
+// Apply morphological closing
+var dilated = glacierMask.focalMax({kernel: kernel, iterations: 1}); // Expand by 2 pixels
+var closedGlacier = dilated.focalMin({kernel: kernel, iterations: 1}); // Shrink back by 2 pixels
+
+closedGlacier = closedGlacier.setDefaultProjection(image.projection()).set('system:footprint', image.get('system:footprint'));
+
+// Visualize results
+//Map.addLayer(closedGlacier, {palette: ['green']}, 'Filled Glacier Mask');
+
+// wtf? whats up with the zoom?
+//=======================================================================================
+ 
+
+
+
+// 4.2 Apply the threshold to the final classification sum
+
+  // Threshold the combined classification to obtain final classification
+  //var finalClassification = combinedClassification.where(combinedClassification.lt(thr), 0).where(combinedClassification.gte(thr), 1);
+  //print('Final Classification', finalClassification);
+var finalClassification = glacierMask;
+
+  // Stratified sampling to compare classification and ground truth
+  var testSamplesFinal = finalClassification.addBands(maskedTestGroundTruth).stratifiedSample({
+      numPoints: 2000,
+      classBand: 'class',
+      region: buffers[testGlacier],
+      scale: 30,
+      geometries: true
+  });
+
+  // Confusion matrix and accuracy
+  var validationSampleFinal = testSamplesFinal.errorMatrix('class', 'classification');
+  var accuracyFinal = validationSampleFinal.accuracy();
+  //print('Error Matrix Final:', validationSampleFinal);
+  //print('Accuracy Final:', accuracyFinal);
+
+// Extract confusion matrix elements
+var confusionMatrix = validationSampleFinal.array();
+var TP = confusionMatrix.get([1, 1]); // True Positives (Debris correctly identified)
+var FP = confusionMatrix.get([0, 1]); // False Positives (Non-debris misclassified as debris)
+var FN = confusionMatrix.get([1, 0]); // False Negatives (Debris missed)
+var TN = confusionMatrix.get([0, 0]); // True Negatives (Non-debris correctly classified)
+
+// Compute Precision: TP / (TP + FP)
+var precision = TP.divide(TP.add(FP));
+
+// Compute Recall (Sensitivity): TP / (TP + FN)
+var recall = TP.divide(TP.add(FN));
+
+// Compute F1-Score: 2 * (Precision * Recall) / (Precision + Recall)
+var f1Score = precision.multiply(recall).multiply(2).divide(precision.add(recall));
+
+
+// Add Metrics to Summary
+
+var evaluationMetrics = ee.Feature(null, {
+  'Accuracy': accuracyFinal,
+  'F1-Score': f1Score,
+  'Precision': precision,
+  'Recall': recall,
+  //'TP':TP,
+  //'FP':FP,
+  //'FN':FN,
+  //'TN':TN
+});
+print('evaluations metrics', evaluationMetrics);
+
+
+
+  accuracyList.push(ee.Feature(null, {
+    'Final Accuracy': accuracyFinal
+  }));
+
+  var accuracyTable = ee.FeatureCollection(accuracyList);
+  //print('Accuracy Table', accuracyTable);
+
+  // Display the final classification
+  Map.centerObject(testRoi, 13);
+  
+ //Map.addLayer(finalClassification, visClass, 'Final Classification mask');
+
+//==================================================
+// 5. Smooth and vectorize final classification mask
+//==================================================
+
+//var binaryGlacier = closedGlacier.gt(0).selfMask();
+// Convert the binary mask to vectors (polygons)
+var polygons = glacierMask.reduceToVectors({
+  geometryType: 'polygon',
+  reducer: ee.Reducer.countEvery(),
+  scale: 30,  // Adjust to your image's resolution
+  maxPixels: 1e8,
+  geometry: testRoi  // Ensure the geometry of the mask is used
+});
+
+Map.addLayer(testInput, {bands: 'coherence'}, 'coherence', false);
+
+//Map.addLayer(zmutt_2015, {}, 'zmutt 2015');
+//Map.addLayer(oberaletsch_2014, {}, 'oberaletsch 2014');
+
+// Add the vector layer to the map to visualize the polygons
+//Map.addLayer(testInput, {bands: 'inSAR'}, 'inSAR', false);
+Map.addLayer(testInput, {bands: 'normalizedLst'}, 'normalizedLst', false);
+Map.addLayer(polygons, {color: 'red'}, 'Vectorized classification result');
+
+// for belvedere:
+Map.addLayer(belvedere18, {color: 'blue'}, 'belvedere 2018', false);
+Map.addLayer(belvedere21, {color: 'blue'}, 'belvedere 2021', false);
+Map.addLayer(belvedere23, {color: 'blue'}, 'belvedere 2023', false);
+
+// Print the polygons to the console for inspection
+//print('vectorized classification result', polygons);
+
+/*
+
+// alternative methods for thresholding
+var dataset = combinedClassification;
+
+// 2. Adaptive Thresholding using Local Mean (Focal Statistics)
+var kernel = ee.Kernel.square(20);  // Neighborhood size
+var localMean = dataset.reduceNeighborhood({
+  reducer: ee.Reducer.mean(),
+  kernel: kernel
+});
+
+var adaptiveThreshold = dataset.gt(localMean);
+Map.addLayer(adaptiveThreshold, {palette: ['black', 'red']}, 'Adaptive Threshold');
+
+// 3. K-means Clustering for Glacier Segmentation
+var training = dataset.sample({
+  region: testRoi,
+  scale: 30,
+  numPixels: 5000
+});
+
+var clusterer = ee.Clusterer.wekaKMeans(2).train(training);
+var clustered = dataset.cluster(clusterer);
+Map.addLayer(clustered.randomVisualizer(), {}, 'K-means Clustering');
+
+// 4. Morphological Operations for Smoothing
+var binaryMask = adaptiveThreshold
+  .focalMode({radius: 1, kernelType: 'square'}) // Smooth small noise
+  .focalMax({radius: 1, kernelType: 'circle'})  // Fill gaps
+  .selfMask();  // Remove zero pixels
+
+Map.addLayer(binaryMask, {palette: ['black', 'cyan']}, 'Morphologically Processed');
+
+*/
+//==========
+// 6. Export
+//==========
+/*
+Export.table.toDrive({
+  collection: polygons,
+  description:'vectorized_approachI_'+selectedYear+testGlacier,
+  folder: 'DCG_approachII_GEE_exports',
+  fileFormat: 'SHP'
+});
+Export.image.toDrive({
+  image: finalClassification.toDouble(),
+  description: 'finalClassification_approachII_' + testGlacier+selectedYear,
+  folder: 'DCG_approachII_GEE_exports',
+  scale: 30,
+  region: testRoi,
+  fileFormat: 'GeoTIFF'
+});
+Export.image.toDrive({
+  image: combinedClassification.toDouble(),
+  description: 'combinedClassification_approachII_' + testGlacier+selectedYear,
+  folder: 'DCG_approachII_GEE_exports',
+  scale: 30,
+  region: testRoi,
+  fileFormat: 'GeoTIFF'
+});
+Export.image.toDrive({
+  image: testInput.toDouble(),
+  description: 'testInput_' + testGlacier+selectedYear,
+  folder: 'DCG_approachII_GEE_exports',
+  scale: 30,
+  region: testRoi,
+  fileFormat: 'GeoTIFF'
+});
+Export.table.toDrive({
+  collection: accuracyTable,
+  description: 'accuracyTable_differentGlaciers_'+testGlacier+selectedYear, 
+  folder: 'DCG_approachII_GEE_exports', 
+  fileFormat: 'CSV'});
+*/
+
+} 
