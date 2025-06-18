@@ -17,8 +17,9 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 
 ```
 ├───code
-│   ├───gee_preprocessing  
-│   └───colab_analysis
+│   ├───a_gee_preprocessing  
+│   ├───b_colab_analysis
+|   └───
 │      
 ├───data
 │   └───results
@@ -71,7 +72,9 @@ To extend the analysis to other glaciers and/or years, the follwoing steps will 
 
 ## 3. Contact
 
-Code development: \[Lorena Müller], \[University of Zürich, TIR lab (Thermal InfraRed)]
+Code development and support: 
+\Lorena Müller, Gabriele Bramti, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Jennifer Susan Adams, Luis Gentner 
+\University of Zürich, Remote Sensing Laboratories (RSL)
 For questions, suggestions, or bug reports, please contact: \[[your.email@institution.org](mailto:your.email@institution.org)]
 
 [back to content](#3-contact)
