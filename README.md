@@ -19,11 +19,12 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 ├───code
 │   ├───a_gee_preprocessing  
 │   ├───b_colab_analysis
-|   └───
+|   └───msc_thesis_gee_scripts
 │      
 ├───data
+│   ├───coherence
 │   └───results
-│       ├───figures
+|       ├───mapped_outlines
 │       └───polygon_outlines
 │
 ├───figures
@@ -31,13 +32,15 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 └───tables
 ```
 
-* The script in `gee_preprocessing` is a Google Earth Engine (GEE) script used to derive relevant spectral, thermal, radar, and topographic features from open satellite data (Sentinel-1, Landsat 8, Copernicus DEM). The processed image layers are exported to Google Drive.
+Code
+* The scripts in `gee_preprocessing` are Google Earth Engine (GEE) scripts used to derive relevant spectral, thermal, radar, and topographic features from open satellite data (Sentinel-1, Landsat 8, Copernicus   DEM). The processed image layers are exported to Google Drive. Relevant for this is the first script `1_create_input_Layers`. Links to this script in GEE and to the relevant repository can be found in `1a_gee_links`. The additional scripts are not needed for the data preprocessing, but may provide additional background information on the development of the methodology.
+* The script in `colab_analysis` is a Google Colab notebook that loads the exported data, trains an XGBoost classifier, statistically evaluates the results against the Swiss Glacier Inventory (SGI), and generates final glacier outlines, including multi-year averaged maps. The script was splitted into a full version, that executes all described steps for a selected glacier, and a second script with only the evaluation und visualisation of the results, to reduce processing time when only interested in the analysis of the results. 
+* The scripts in `msc_thesis_gee_scripts` were created during a Master Thesis that served as the basis for the current analysis and code provided. They are not used anymore for the current state of this work, but may be helpful for background information on the development of the methodology. 
 
-* The script in `colab_analysis` is a Google Colab notebook that loads the exported data, trains an XGBoost classifier, evaluates the results, and generates final glacier outlines, including multi-year averaged maps.
-
-* The folder `data` is empty by default and should contain the exported image stacks and reference glacier outlines. These can be obtained by running the GEE script or using links provided in the manuscript (see Zenodo DOI when available).
-
-* The folders `figures` and `tables` are used to store outputs from the analysis, including classification maps, comparisons with glacier inventories, and performance metrics.
+Data
+* The folder `coherence` contains a brief overview for the processing of InSAR coherence with two Sentinel-1 SLC scenes using ESA SNAP. The processed coherence data was not added due to their large size. However, they can be 
+* The folder `mapped_outlines` contains visualisations of the classification results per glacier. They can be reproduced with the provided code.
+* The folder `polygon_outlines` contains the shapefiles of the classification outlines per glacier, averaged for the time frame 2016-2024. They can be reproduced with the provided code.
 
 [back to content](#1-repository-structure)
 
@@ -70,18 +73,45 @@ To extend the analysis to other glaciers and/or years, the follwoing steps will 
 
 ---
 
-## 3. Contact
+## 3. Informations on the method and workflow recommendations
 
-Code development and support: 
-\Lorena Müller, Gabriele Bramti, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Jennifer Susan Adams, Luis Gentner 
+## Informations on the method
+Study glaciers: Zmutt, Unteraar, Oberaletsch, Zinal, Mauvoisin (Swiss DCGs), used for training and evaluation against the SGI2016 (Swiss Glacier Inventory 2016). Belvedere and Satopanth glaciers for additional evaluation. 
+Years: 2016, 2018, 2020, 2022 and 2024. For statistical evaluation against the SGI2016: 2016. Other years to see potential retreat in glacier extent.
+full workflow: preprocessed coherence (12 day interval, Sentinel-1, descending, SLC) using ESA SNAP. then in GEE script, create input layers for all glaciers and years; 
+* LST NIR Index (lst normalized for elevation by regression, then normalized difference index with NIR),
+* NDVI (normalized difference vegetation index),
+* NDSI (normalised difference snow index),
+* slope (from copernicus DEM)
+* VH radar backscatter, averaged over one summer
+* coherence
+-> all normalized to [0, 1] and exported to google drive.
+Then in Google colab: classification using XGBoost. The classifier is applied to 20 different band combinations of the input layers, to increase robustness. The results of these model runs are combined into an ensemble result. 
+
+
+## Workflow recommendations
+For the complete process: 
+1. Run GEE script `1_create_input_layers` to create the relevant input layers.
+2. Run google colab script 'complete_RF_all_glaciers.ipynb' to run the classification.
+
+For visualisation and analysis of the results, when no changes to the input layers are made: 
+1. Access the already processed classification ensemble results via: https://drive.google.com/drive/folders/1y7jBnQ6PUZxdVV6GRvbdyzUl_xE3tR7P?usp=sharing
+2. Run the google colab script 'snipplet_RF_all_glaciers.ipynb' to visualize and analyse the results.
+
+---
+
+## 4. Contact
+
+Code development: 
+\Lorena Müller, in support of Gabriele Bramati, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Jennifer Susan Adams, Luis Gentner 
 \University of Zürich, Remote Sensing Laboratories (RSL)
-For questions, suggestions, or bug reports, please contact: \[[your.email@institution.org](mailto:your.email@institution.org)]
+For questions or suggestions, please contact: \[[your.email@institution.org](mailto:your.email@institution.org)]
 
 [back to content](#3-contact)
 
 ---
 
-## 4. Acknowledgements
+## 5. Acknowledgements
 
 We thank ESA and NASA for free access to Sentinel-1 and Landsat 8 data.
 Topographic data from the Copernicus Digital Elevation Model was provided by the European Space Agency.
@@ -92,15 +122,5 @@ We also acknowledge the Swiss Glacier Inventory (SGI) and the Randolph Glacier I
 
 ---
 
-## 5. License
 
-The scripts in this repository (`*.js`, `*.ipynb`) are licensed under the MIT License (see LICENSE file).
-??
-
-**Creative Commons License**
-All other content (e.g. figures, tables, documentation) is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
-??
-[back to content](#6-license)
-
----
 
