@@ -5,9 +5,9 @@ This repository provides a semi-automated pipeline for mapping debris-covered gl
 Google Earth Engine (GEE) to preprocess and export satellite-derived features.
 Google Colab for loading these features, training an XGBoost classifier, and generating final glacier outlines.
 
-Our approach aims to improve DCG mapping in complex terrain where traditional methods relying on manual delineation or high-resolution data are not scalable. The methodology is validated on glaciers in Switzerland, Italy, and India, and is designed with global applicability in mind.
+Our approach aims to improve DCG mapping in complex terrain where traditional methods relying on manual delineation or high-resolution data are not scalable. The methodology is tested on glaciers in Switzerland, Italy, and India, and is designed with global applicability in mind.
 
-Last update to this readme: 16 June 2025.
+Last update to this readme: 24 June 2025.
 
 ---
 
@@ -23,13 +23,11 @@ Here is the structure of this repo. Files have been excluded from this tree for 
 │      
 ├───data
 │   ├───coherence
-│   └───results
-|       ├───mapped_outlines
-│       └───polygon_outlines
+│   └───links_existing_glacier_inventories
 │
-├───figures
-│
-└───tables
+└───results
+    ├───figures
+    └───polygon_outlines
 ```
 
 Code
@@ -38,8 +36,11 @@ Code
 * The scripts in `msc_thesis_gee_scripts` were created during a Master Thesis that served as the basis for the current analysis and code provided. They are not used anymore for the current state of this work, but may be helpful for background information on the development of the methodology. 
 
 Data
-* The folder `coherence` contains a brief overview for the processing of InSAR coherence with two Sentinel-1 SLC scenes using ESA SNAP. The processed coherence data was not added due to their large size. However, they can be 
-* The folder `mapped_outlines` contains visualisations of the classification results per glacier. They can be reproduced with the provided code.
+* The folder `coherence` contains a brief overview for the processing of InSAR coherence with two Sentinel-1 SLC scenes using ESA SNAP. The processed coherence data was not added due to their large size. They can be accessed via the GEE script '1_create_input_layers' where they are available in the assets.
+* The file 'links_existing_glacier_inventories' provied links to the data download of existing glacier inventories that were used for evaluation of the methodology. 
+
+Results
+* The folder `figures` contains visualisations of the classification results per glacier. They can be reproduced with the provided code.
 * The folder `polygon_outlines` contains the shapefiles of the classification outlines per glacier, averaged for the time frame 2016-2024. They can be reproduced with the provided code.
 
 [back to content](#1-repository-structure)
@@ -56,14 +57,13 @@ To process the same glaciers (Zmutt, Unteraar, Oberaletsch, Zinal, Mauvoisin, Be
 To extend the analysis to other glaciers and/or years, the follwoing steps will have to be followed: 
 * Additional Coherence data: e.g. manual processing using the ESA SNAP software and upload of the processed geotiff file to the GEE assets.
 * Inspect Landsat scenes of the desired region/year.
-* Add names of the processed coherence and landsat scene in GEE script (1_create_input_layers), run script and export to Drive.
+* Add the processed coherence and landsat scene in the GEE script (1_create_input_layers), run script and export to Drive.
 * Add the new glaciers and/or years in the google colab script (complete_RF_all_glaciers.ipynb).
 
 ### Software
 
 * **Google Earth Engine** (JavaScript API via browser)
 * **Google Colab** with:
-
   * Python 3
   * `xgboost`, `numpy`, `pandas`, `rasterio`, `scikit-learn`, `matplotlib`, `geopandas`
 
@@ -75,21 +75,48 @@ To extend the analysis to other glaciers and/or years, the follwoing steps will 
 
 ## 3. Informations on the method and workflow recommendations
 
-## Informations on the method
-Study glaciers: Zmutt, Unteraar, Oberaletsch, Zinal, Mauvoisin (Swiss DCGs), used for training and evaluation against the SGI2016 (Swiss Glacier Inventory 2016). Belvedere and Satopanth glaciers for additional evaluation. 
-Years: 2016, 2018, 2020, 2022 and 2024. For statistical evaluation against the SGI2016: 2016. Other years to see potential retreat in glacier extent.
-full workflow: preprocessed coherence (12 day interval, Sentinel-1, descending, SLC) using ESA SNAP. then in GEE script, create input layers for all glaciers and years; 
-* LST NIR Index (lst normalized for elevation by regression, then normalized difference index with NIR),
-* NDVI (normalized difference vegetation index),
-* NDSI (normalised difference snow index),
-* slope (from copernicus DEM)
-* VH radar backscatter, averaged over one summer
-* coherence
--> all normalized to [0, 1] and exported to google drive.
-Then in Google colab: classification using XGBoost. The classifier is applied to 20 different band combinations of the input layers, to increase robustness. The results of these model runs are combined into an ensemble result. 
+### Method Overview
+
+**Study Glaciers**
+The method was developed using seven debris-covered glaciers (DCGs):
+- **Swiss DCGs (used for training and evaluation against SGI2016):**  
+  Zmutt, Unteraar, Oberaletsch, Zinal, Mauvoisin  
+- **Additional evaluation glaciers:**  
+  Belvedere and Satopanth
+
+**Years Analyzed**
+- **2016:** Used for statistical evaluation against the SGI2016  
+- **2018, 2020, 2022, 2024:** Used to assess potential retreat in glacier extent
+
+### Workflow
+
+1. Preprocessing (Coherence)
+    * Sentinel-1 SLC (descending orbit, 12-day interval) coherence was computed using ESA SNAP.
+
+3. Input Layer Generation (Google Earth Engine)
+For each glacier and year, the following layers were created:
+    * `LST NIR Index`: LST normalized for elevation via regression, then combined with NIR as a normalized difference index
+    * `NDVI`: Normalized Difference Vegetation Index
+    * `NDSI`: Normalized Difference Snow Index
+    * `Slope`: From Copernicus DEM
+    * `VH`: VH-band radar backscatter, averaged over one summer
+    * `Coherence`: From Sentinel-1 SNAP preprocessing
+→ All layers were normalized to a \[0, 1\] range and exported to Google Drive.
+
+3. Classification (Google Colab)
+    * Performed using **XGBoost**
+    * Included neighboring pixels to add spatial context
+    * Each dataset was classified using **20 different band combinations** for robustness
+    * Results were combined into an **ensemble prediction**
+
+4. Post-processing
+- **Otsu’s method** applied to ensemble output for automatic thresholding
+- Binary masks from different years can be merged into a **composite outline**, including only areas classified as glacier in ≥ *n* years (e.g., 3+)
+- This results in an **averaged glacier outline for 2016–2024**, offering a more robust basis for modeling and analysis
 
 
-## Workflow recommendations
+
+### Workflow recommendations
 For the complete process: 
 1. Run GEE script `1_create_input_layers` to create the relevant input layers.
 2. Run google colab script 'complete_RF_all_glaciers.ipynb' to run the classification.
@@ -103,9 +130,8 @@ For visualisation and analysis of the results, when no changes to the input laye
 ## 4. Contact
 
 Code development: 
-\Lorena Müller, in support of Gabriele Bramati, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Jennifer Susan Adams, Luis Gentner 
-\University of Zürich, Remote Sensing Laboratories (RSL)
-For questions or suggestions, please contact: \[[your.email@institution.org](mailto:your.email@institution.org)]
+Lorena Müller, in support of Gabriele Bramati, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Dr. Jennifer Susan Adams, Luis Gentner 
+University of Zürich, Remote Sensing Laboratories (RSL)
 
 [back to content](#3-contact)
 
