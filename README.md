@@ -131,6 +131,7 @@ For visualisation and analysis of the results, when no changes to the input laye
 
 Code development: 
 Lorena Müller, in support of Gabriele Bramati, Dr. Kathrin Naegeli, Dr. Hendrik Wulf, Dr. Jennifer Susan Adams, Luis Gentner 
+
 University of Zürich, Remote Sensing Laboratories (RSL)
 
 [back to content](#3-contact)
